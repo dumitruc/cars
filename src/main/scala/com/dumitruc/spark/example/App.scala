@@ -1,20 +1,21 @@
 package com.dumitruc.spark.example
 
-import java.io.File
-
-import org.apache.spark.sql.{DataFrame, SQLContext}
 import org.apache.spark.sql.types._
+import org.apache.spark.sql.{DataFrame, SQLContext}
 import org.apache.spark.{SparkConf, SparkContext}
-
-import scala.reflect.io.Path
 
 /**
   * @author ${user.name}
   */
 object App extends App {
 
-  val conf = new SparkConf().setAppName("cars").setMaster("local")
-  val sc = new SparkContext(conf)
+
+  val sc = new SparkContext(new SparkConf())
+  //
+  //
+  //  val conf = new SparkConf().setAppName("cars").setMaster("local")
+  //  val sc = new SparkContext(conf)
+  //
 
   private val carsInputFile = "/Users/dima/IdeaProjects/BigData/spark/cars/src/main/resources/cars-details.csv"
 
