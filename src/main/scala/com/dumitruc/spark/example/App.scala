@@ -1,5 +1,7 @@
 package com.dumitruc.spark.example
 
+import java.util.Date
+
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.{DataFrame, SQLContext}
 import org.apache.spark.{SparkConf, SparkContext}
@@ -10,14 +12,16 @@ import org.apache.spark.{SparkConf, SparkContext}
 object App extends App {
 
   val environment = System.getProperty("spark.master")
+  val carsInputFile = System.getProperty("spark.cars.csv.path")
+  val appID = new Date().toString + math.floor(math.random * 10E4).toLong.toString
 
   println("Execution environment: "+ environment)
+  println("Running app with id: " + appID)
 
-  val sc = new SparkContext(new SparkConf())
-
-
-  private val carsInputFile = "/Users/corobced/IdeaProjects/_EDP/cars/src/main/resources/cars-details.csv"
-
+  private val conf = new SparkConf()
+  conf.set("spark.app.id", appID)
+  conf.setAppName("Cars")
+  val sc = new SparkContext(conf)
 
   val allCars = readCars(sc, carsInputFile)
 
