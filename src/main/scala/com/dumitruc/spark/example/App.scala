@@ -1,5 +1,7 @@
 package com.dumitruc.spark.example
 
+import java.util.Date
+
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.{DataFrame, SQLContext}
 import org.apache.spark.{SparkConf, SparkContext}
@@ -9,16 +11,17 @@ import org.apache.spark.{SparkConf, SparkContext}
   */
 object App extends App {
 
+  val environment = System.getProperty("spark.master")
+  val carsInputFile = System.getProperty("spark.cars.csv.path")
+  val appID = new Date().toString + math.floor(math.random * 10E4).toLong.toString
 
-  val sc = new SparkContext(new SparkConf())
-  //
-  //
-  //  val conf = new SparkConf().setAppName("cars").setMaster("local")
-  //  val sc = new SparkContext(conf)
-  //
+  println("Execution environment: "+ environment)
+  println("Running app with id: " + appID)
 
-  private val carsInputFile = "/Users/dima/IdeaProjects/BigData/spark/cars/src/main/resources/cars-details.csv"
-
+  private val conf = new SparkConf()
+  conf.set("spark.app.id", appID)
+  conf.setAppName("Cars")
+  val sc = new SparkContext(conf)
 
   val allCars = readCars(sc, carsInputFile)
 

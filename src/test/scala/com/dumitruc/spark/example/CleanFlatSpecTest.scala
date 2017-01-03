@@ -1,19 +1,23 @@
 package com.dumitruc.spark.example
 
+import com.dumitruc.spark.example.support.Utils
+import com.holdenkarau.spark.testing.SharedSparkContext
+import org.apache.spark.sql.SQLContext
 import org.apache.spark.sql.types.{StringType, StructField, StructType}
-import org.apache.spark.sql.{DataFrame, Row, SQLContext}
-import org.apache.spark.{SparkConf, SparkContext}
 import org.scalatest.FlatSpec
+
 
 /**
   * Created by dima on 02/01/2017.
   */
-class CleanFlatSpecTest extends FlatSpec {
+class CleanFlatSpecTest extends FlatSpec with SharedSparkContext {
 
-  val conf = new SparkConf().setAppName("cars").setMaster("local")
-  val sc = SparkContext.getOrCreate(conf)
+  @transient private var sqlContext: SQLContext = _
 
-  private val sqlContext = new SQLContext(sc)
+  override def beforeAll() {
+    super.beforeAll()
+    sqlContext = new SQLContext(sc)
+  }
 
   val customSchema = StructType(Array(
     StructField("Car", StringType, true),
@@ -27,18 +31,13 @@ class CleanFlatSpecTest extends FlatSpec {
     StructField("Origin", StringType, true)
   ))
 
-  def stringToDf(inputString: String): DataFrame = {
-    val sampleRDD = sqlContext.sparkContext.parallelize(
-      inputString.split("\n").toStream.map(a => a.split(";")).toArray.toSeq)
-    sqlContext.createDataFrame(sampleRDD.map(v => Row(v: _*)), customSchema)
-  }
 
   "Data selction " should " ignore header row" in {
     val headers: String =
       """|Car;MPG;Cylinders;Displacement;Horsepower;Weight;Acceleration;Model;Origin
          |Chevrolet Chevelle Malibu;18.0;8;307.0;130.0;3504.;12.0;70;US""".stripMargin
 
-    val clean = CleanRecords.apply(sc, stringToDf(headers)).validCars.clean
+    val clean = CleanRecords.apply(sc, Utils.stringToDf(headers, customSchema, sqlContext)).validCars.clean
     clean.show
     assert(clean.count() === 1)
   }
@@ -49,7 +48,7 @@ class CleanFlatSpecTest extends FlatSpec {
         |Chevrolet Chevelle Malibu;18.0;8;307.0;130.0;3504.;12.0;70;US
       """.stripMargin
 
-    val clean = CleanRecords.apply(sc, stringToDf(headers)).validCars.clean
+    val clean = CleanRecords.apply(sc, Utils.stringToDf(headers, customSchema, sqlContext)).validCars.clean
     clean.show
     assert(clean.count() === 1)
   }
@@ -60,7 +59,7 @@ class CleanFlatSpecTest extends FlatSpec {
       """|STRING;DOUBLE;INT;DOUBLE;DOUBLE;DOUBLE;DOUBLE;INT;CAT
          |Chevrolet Chevelle Malibu;18.0;8;307.0;130.0;3504.;12.0;70;US""".stripMargin
 
-    val clean = CleanRecords.apply(sc, stringToDf(headers)).validCars.clean
+    val clean = CleanRecords.apply(sc, Utils.stringToDf(headers, customSchema, sqlContext)).validCars.clean
     clean.show
     assert(clean.count() === 1)
   }
@@ -73,7 +72,7 @@ class CleanFlatSpecTest extends FlatSpec {
         |AMC Rebel SST;16.0;8;304.0;150.0;3433.;12.0;70;US
         |Ford Torino;17.0;8;302.0;140.0;3449.;10.5;70;US""".stripMargin
 
-    val clean = CleanRecords.apply(sc, stringToDf(validData)).validCars.clean
+    val clean = CleanRecords.apply(sc, Utils.stringToDf(validData, customSchema, sqlContext)).validCars.clean
     clean.show
     assert(clean.count() === 5)
   }
