@@ -3,15 +3,15 @@ package com.dumitruc.spark.example
 import org.apache.spark.sql.types.{StringType, StructField, StructType}
 import org.apache.spark.sql.{DataFrame, Row, SQLContext}
 import org.apache.spark.{SparkConf, SparkContext}
-import org.scalatest.FlatSpec
+import org.scalatest.{FlatSpec, FunSpec}
+
+import com.holdenkarau.spark.testing._
+
 
 /**
   * Created by dima on 02/01/2017.
   */
-class CleanFlatSpecTest extends FlatSpec {
-
-  val conf = new SparkConf().setAppName("cars").setMaster("local")
-  val sc = SparkContext.getOrCreate(conf)
+class CleanFlatSpecTest extends FlatSpec with SharedSparkContext {
 
   private val sqlContext = new SQLContext(sc)
 

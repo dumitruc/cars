@@ -9,15 +9,14 @@ import org.apache.spark.{SparkConf, SparkContext}
   */
 object App extends App {
 
+  val environment = System.getProperty("spark.master")
+
+  println("Execution environment: "+ environment)
 
   val sc = new SparkContext(new SparkConf())
-  //
-  //
-  //  val conf = new SparkConf().setAppName("cars").setMaster("local")
-  //  val sc = new SparkContext(conf)
-  //
 
-  private val carsInputFile = "/Users/dima/IdeaProjects/BigData/spark/cars/src/main/resources/cars-details.csv"
+
+  private val carsInputFile = "/Users/corobced/IdeaProjects/_EDP/cars/src/main/resources/cars-details.csv"
 
 
   val allCars = readCars(sc, carsInputFile)
