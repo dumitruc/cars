@@ -20,7 +20,6 @@ case class CleanRecords(sc: SparkContext, allCars: DataFrame) {
       false else true)
 
 
-
   def validCars: CleanRecords = {
     filteredCars = filteredCars
       .filter(trim($"Car") !== "")

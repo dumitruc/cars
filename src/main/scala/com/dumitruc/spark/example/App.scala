@@ -36,7 +36,7 @@ object App extends App {
   println ("Total records after the filtering:" + cleanCarsRecords.count())
 
 
-  def readCars(sc: SparkContext, jsonPath: String): DataFrame = {
+  def readCars(sc: SparkContext, csvPath: String): DataFrame = {
     val sqlContext = new SQLContext(sc)
 
     val carsDataFrame = sqlContext.read
@@ -44,7 +44,9 @@ object App extends App {
       .option("header","true")
       .option("delimiter",";")
       .schema(customSchema)
-      .load(jsonPath)
+      .load(csvPath)
+
+    carsDataFrame.show()
 
     carsDataFrame
   }
