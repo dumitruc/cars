@@ -1,4 +1,15 @@
-# Findings and ideas
+  # The application
+  A simple application to try and exercise Spark functionality to identify various testing requirements and solution.
+  ## Funtionality
+  Take a CSV list of Cars, with various properties, remove bad records, create an output file.
+    **Arguments to the application:**
+ - spark.cars.csv.in - Full path
+ - spark.cars.csv.out - Full path
+    
+  ## Running from IDE
+      -Dspark.master=local -Dspark.cars.csv.in=/Users/dima/IdeaProjects/BigData/spark/cars/src/main/resources/cars-details.csv -Dspark.cars.csv.out=/Users/dima/IdeaProjects/BigData/spark/cars/src/main/resources/cars-cleaned.csv
+    
+  # Findings and ideas
 
   - whe using Cucumber, is best to use it with JUnit rather than Scala, although it is possible, there might arise different version issues and the scla - cucumber plugins and libraries are in their infancy.
   - Unit test ideally should be of the language type
@@ -11,8 +22,11 @@
 - [ ] Write vrious DF validation test (i.e. compary 2 data frames)
 - [ ] Create Integration tests to run on a separate standlone cluster
 - [ ] Maven profile to execute app on separate standalone cluster
+- [ ] Maven profile to test app on separate standalone cluster
 - [ ] wire Cucumber to JUnit
 - [ ] Wire cucumber to run by deploying and running on local cluster
+- [ ] Document setup & environment pre-req
+
 
 
   #Execution notes.
@@ -26,9 +40,8 @@ spark-submit \
   --driver-memory 512m \
   --executor-memory 512m \
   --conf spark.eventLog.enabled=false \
-  --conf spark.cars.csv.path=cars/src/main/resources/cars-details.csv \
+  --conf spark.cars.csv.in=cars/src/main/resources/cars-details.csv \
+  --conf spark.cars.csv.out=cars/src/main/resources/cars-cleaned.csv \
   --name "Cars" \
   cars/target/cars-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
-
-  - configure Intellij RUN configurations (run and test)
