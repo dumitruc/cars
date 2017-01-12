@@ -25,6 +25,7 @@ object App extends App {
   conf.setAppName("Cars")
   val sc = new SparkContext(conf)
 
+  checkInputAccess(carsInputFile)
   val allCars = readCars(sc, carsInputFile)
 
   println("Total records in file: " + allCars.count())
@@ -37,6 +38,23 @@ object App extends App {
 
   val result = writeCleanCarRecords(sc, carsOutputFile, cleanCarsRecords)
 
+  def checkInputAccess(csvFilePath:String): Unit ={
+    try{
+      val file = new File(csvFilePath)
+      if (!file.canRead) throw new RuntimeException()
+    }catch {
+      case _ : Throwable => println("Can not read file at: "+csvFilePath)
+    }
+  }
+
+  import org.apache.hadoop.conf.Configuration
+  import org.apache.hadoop.fs._
+
+  def merge(srcPath: String, dstPath: String): Unit =  {
+    val hadoopConfig = new Configuration()
+    val hdfs = FileSystem.get(hadoopConfig)
+    FileUtil.copyMerge(hdfs, new Path(srcPath), hdfs, new Path(dstPath), true, hadoopConfig, null)
+  }
   def readCars(sc: SparkContext, csvFilePath: String): DataFrame = {
     val sqlContext = new SQLContext(sc)
 
@@ -57,18 +75,20 @@ object App extends App {
 
 
     try {
-      df.repartition(1). //To have it one file/partition!
+      df.
         write.
         format("com.databricks.spark.csv").
         option("header", "true").
         option("delimiter", ",").
         save(tmpParquetDir)
 
-      val dir = new File(tmpParquetDir)
-      val tmpTsvFile = tmpParquetDir + File.separatorChar + "part-00000"
-      (new File(tmpTsvFile)).renameTo(new File(csvFilePath))
-      dir.listFiles.foreach(f => f.delete)
-      dir.delete
+      merge(tmpParquetDir,carsOutputFile)
+
+//      val dir = new File(tmpParquetDir)
+//      val tmpTsvFile = tmpParquetDir + File.separatorChar + "part-00000"
+//      (new File(tmpTsvFile)).renameTo(new File(csvFilePath))
+//      dir.listFiles.foreach(f => f.delete)
+//      dir.delete
       println("The file was successfully created. Check " + carsOutputFile)
 
 
