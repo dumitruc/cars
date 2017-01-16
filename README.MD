@@ -60,6 +60,13 @@
 - [ ] wire Cucumber to JUnit
 - [ ] Wire cucumber to run by deploying and running on local cluster
 - [ ] Document setup & environment pre-req
+- [ ] Create a AWS pipeline
+- [ ] Create a docker image that runs jenkins
+- [ ] Create shell + groovy scripts that run on the DOCKER Jenkins
+- [ ] Configure Jenkins jobs to instantiate HADOOP cloudera docker(s) (3 cluster mode)
+- [ ] Jenkins job to deploy&run test in the cluster
+- [ ] Jenkins job to deploy&run app in "prod" cluster (another set of docker images)
+
 
 
 
