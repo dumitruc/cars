@@ -13,6 +13,10 @@
     Repository required:
     ```xml
      <repositories>
+                <repository>
+                    <id>cloudera</id>
+                    <url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>
+                </repository>
                     <repository>
                         <snapshots/>
                         <id>maven central</id>
@@ -55,6 +59,8 @@
 - [ ] Structure POM so that all dependencies are in a separate JAR. This will avoid building big JARs in Artifactory everytime
 - [ ] Write vrious DF validation test (i.e. compary 2 data frames)
 - [ ] Create Integration tests to run on a separate standlone cluster
+- [ ] Add pig and pig tests
+- [ ] Add sqoop and sqoop tests
 - [ ] Maven profile to execute app on separate standalone cluster
 - [ ] Maven profile to test app on separate standalone cluster
 - [ ] wire Cucumber to JUnit
