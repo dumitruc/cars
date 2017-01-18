@@ -62,14 +62,6 @@
             <version>1.5.0</version>
         </dependency>
 
-        <!--Scala-->
-        <!--<dependency>-->
-            <!--<groupId>net.alchim31.maven</groupId>-->
-            <!--<artifactId>scala-maven-plugin</artifactId>-->
-            <!--<version>${scala.maven.plugin.version}</version>-->
-        <!--</dependency>-->
-
-
         <!-- Test -->
         <dependency>
             <groupId>junit</groupId>
