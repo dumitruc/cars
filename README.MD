@@ -79,6 +79,10 @@
   #Execution notes.
 
   - Submit a job to a running Spark Environment (talking local only)
+  - Solution for OutOfMemory due to hive on OSX
+  ```bash
+  JAVA_TOOL_OPTIONS="-Xmx1024m -XX:MaxPermSize=512m -Xms512m"
+  ```
 
 ```bash
 spark-submit \
