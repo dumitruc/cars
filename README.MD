@@ -1,3 +1,5 @@
+  [![Build Status](https://travis-ci.org/dumitruc/cars.svg?branch=master)](https://travis-ci.org/dumitruc/cars)
+  
   # The application
   A simple application to try and exercise Spark functionality to identify various testing requirements and solution.
   ## Funtionality
