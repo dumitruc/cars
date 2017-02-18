@@ -11,7 +11,7 @@
   ## Running from IDE
       -Dspark.master=local -Dspark.cars.csv.in=/Users/dima/IdeaProjects/BigData/spark/cars/src/main/resources/cars-details.csv -Dspark.cars.csv.out=/Users/dima/IdeaProjects/BigData/spark/cars/src/main/resources/cars-cleaned.csv
 
-    ### Setup
+   ### Setup
     Repository required:
     ```xml
      <repositories>
